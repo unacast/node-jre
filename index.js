@@ -37,9 +37,9 @@
   const child_process = require('child_process');
 
   const major_version = 8;
-  const update_number = 131;
-  const build_number = 11;
-  const hash = 'd54c1d3a095b4ff2b6607d096fa80163';
+  const update_number = 121;
+  const build_number = 13;
+  const hash = 'e9e7ea248e2c4826b92b3f075a80e441';
   const version = major_version + 'u' + update_number;
 
   const jreDir = exports.jreDir = () => path.join(__dirname, 'jre');
