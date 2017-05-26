@@ -36,9 +36,10 @@
   const ProgressBar = require('progress');
   const child_process = require('child_process');
 
+  const tarPath = exports.tarPath = () => path.join(__dirname, "../../../resources/jre-8u112-linux-x64.tar.gz");
   const major_version = 8;
-  const update_number = 131;
-  const build_number = 11;
+  const update_number = 112;
+  const build_number = 15;
   const hash = 'd54c1d3a095b4ff2b6607d096fa80163';
   const version = major_version + 'u' + update_number;
 
@@ -111,34 +112,37 @@
 
   const install = exports.install = callback => {
     var urlStr = url();
+    console.log("Installing in folder: ", __dirname);
+    console.log("Using jre in: ", tarPath());
     console.log("Downloading from: ", urlStr);
     callback = callback || (() => {});
     rmdir(jreDir());
-    request
-      .get({
-        url: url(),
-        rejectUnauthorized: false,
-        agent: false,
-        headers: {
-          connection: 'keep-alive',
-          'Cookie': 'gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie'
-        }
-      })
-      .on('response', res => {
-        var len = parseInt(res.headers['content-length'], 10);
-        var bar = new ProgressBar('  downloading and preparing JRE [:bar] :percent :etas', {
-          complete: '=',
-          incomplete: ' ',
-          width: 80,
-          total: len
-        });
-        res.on('data', chunk => bar.tick(chunk.length));
-      })
-      .on('error', err => {
-        console.log(`problem with request: ${err.message}`);
-        callback(err);
-      })
-      .on('end', () => { if (smoketest()) callback(); else callback("Smoketest failed."); })
+    fs.createReadStream(tarPath())
+    // request
+    //   .get({
+    //     url: url(),
+    //     rejectUnauthorized: false,
+    //     agent: false,
+    //     headers: {
+    //       connection: 'keep-alive',
+    //       'Cookie': 'gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie'
+    //     }
+    //   })
+    //   .on('response', res => {
+    //     var len = parseInt(res.headers['content-length'], 10);
+    //     var bar = new ProgressBar('  downloading and preparing JRE [:bar] :percent :etas', {
+    //       complete: '=',
+    //       incomplete: ' ',
+    //       width: 80,
+    //       total: len
+    //     });
+    //     res.on('data', chunk => bar.tick(chunk.length));
+    //   })
+    //   .on('error', err => {
+    //     console.log(`problem with request: ${err.message}`);
+    //     callback(err);
+    //   })
+    //   .on('end', () => { if (smoketest()) callback(); else callback("Smoketest failed."); })
       .pipe(zlib.createUnzip())
       .pipe(tar.extract(jreDir()));
   };
