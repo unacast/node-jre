@@ -116,35 +116,36 @@
     console.log("Using jre in: ", tarPath());
     console.log("Downloading from: ", urlStr);
     callback = callback || (() => {});
-    rmdir(jreDir());
-    fs.createReadStream(tarPath())
-    // request
-    //   .get({
-    //     url: url(),
-    //     rejectUnauthorized: false,
-    //     agent: false,
-    //     headers: {
-    //       connection: 'keep-alive',
-    //       'Cookie': 'gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie'
-    //     }
-    //   })
-    //   .on('response', res => {
-    //     var len = parseInt(res.headers['content-length'], 10);
-    //     var bar = new ProgressBar('  downloading and preparing JRE [:bar] :percent :etas', {
-    //       complete: '=',
-    //       incomplete: ' ',
-    //       width: 80,
-    //       total: len
-    //     });
-    //     res.on('data', chunk => bar.tick(chunk.length));
-    //   })
-    //   .on('error', err => {
-    //     console.log(`problem with request: ${err.message}`);
-    //     callback(err);
-    //   })
-    //   .on('end', () => { if (smoketest()) callback(); else callback("Smoketest failed."); })
-      .pipe(zlib.createUnzip())
-      .pipe(tar.extract(jreDir()));
+    if(!fs.existsSync(path)) {
+      fs.createReadStream(tarPath())
+      // request
+      //   .get({
+      //     url: url(),
+      //     rejectUnauthorized: false,
+      //     agent: false,
+      //     headers: {
+      //       connection: 'keep-alive',
+      //       'Cookie': 'gpw_e24=http://www.oracle.com/; oraclelicense=accept-securebackup-cookie'
+      //     }
+      //   })
+      //   .on('response', res => {
+      //     var len = parseInt(res.headers['content-length'], 10);
+      //     var bar = new ProgressBar('  downloading and preparing JRE [:bar] :percent :etas', {
+      //       complete: '=',
+      //       incomplete: ' ',
+      //       width: 80,
+      //       total: len
+      //     });
+      //     res.on('data', chunk => bar.tick(chunk.length));
+      //   })
+      //   .on('error', err => {
+      //     console.log(`problem with request: ${err.message}`);
+      //     callback(err);
+      //   })
+      //   .on('end', () => { if (smoketest()) callback(); else callback("Smoketest failed."); })
+        .pipe(zlib.createUnzip())
+        .pipe(tar.extract(jreDir()));
+    }
   };
 
 })();
