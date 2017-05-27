@@ -37,7 +37,6 @@
   const child_process = require('child_process');
   const javaUrl = "https://api.github.com/repos/unacast/node-jre/git/blobs/86e903a8b115bbb21a45381c5520af00b29324b8";
 
-  const tarPath = exports.tarPath = () => path.join(__dirname, "../../../resources/jre-8u112-linux-x64.tar.gz");
   const major_version = 8;
   const update_number = 112;
   const build_number = 15;
@@ -114,7 +113,7 @@
   const install = exports.install = callback => {
     var urlStr = url();
     console.log("Installing in folder: ", __dirname);
-    console.log("Using jre in: ", tarPath());
+    console.log("Installing for driver: ", driver());
     console.log("Downloading from: ", urlStr);
     callback = callback || (() => {});
     rmdir(jreDir());
@@ -127,8 +126,6 @@
         }
       })
       .on('response', res => {
-        console.log("Response length: ", res.headers);
-        console.log("Content: ", res.statusMessage);
         var len = parseInt(res.headers['content-length'], 10);
         var bar = new ProgressBar('  downloading and preparing JRE [:bar] :percent :etas', {
           complete: '=',
