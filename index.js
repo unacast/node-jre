@@ -75,7 +75,11 @@
   );
 
   const driver = exports.driver = () => {
-    var jreDirs = getDirectories(jreDir());
+    var dir = jreDir();
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+    var jreDirs = getDirectories(dir);
     if (jreDirs.length < 1)
       fail('no jre found in archive');
     var d = _driver.slice();
@@ -113,7 +117,6 @@
   const install = exports.install = callback => {
     var urlStr = url();
     console.log("Installing in folder: ", __dirname);
-    console.log("Installing for driver: ", driver());
     console.log("Downloading from: ", urlStr);
     callback = callback || (() => {});
     rmdir(jreDir());
