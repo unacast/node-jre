@@ -89,6 +89,7 @@
   };
 
   const getArgs = exports.getArgs = (classpath, classname, args) => {
+    console.log("What is args: ", args);
     args = (args || []).slice();
     classpath = classpath || [];
     args.unshift(classname);
