@@ -37,9 +37,9 @@
   const child_process = require('child_process');
 
   const major_version = 8;
-  const update_number = 131;
-  const build_number = 11;
-  const hash = 'd54c1d3a095b4ff2b6607d096fa80163';
+  const update_number = 151;
+  const build_number = 12;
+  const hash = 'e758a0de34e24606bca991d704f6dcbf';
   const version = major_version + 'u' + update_number;
 
   const jreDir = exports.jreDir = () => path.join(__dirname, 'jre');
@@ -106,7 +106,7 @@
 
   const url = exports.url = () =>
     'https://download.oracle.com/otn-pub/java/jdk/' +
-    version + '-b' + build_number + '/' + hash + 
+    version + '-b' + build_number + '/' + hash +
     '/jre-' + version + '-' + platform() + '-' + arch() + '.tar.gz';
 
   const install = exports.install = callback => {
